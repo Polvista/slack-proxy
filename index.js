@@ -47,5 +47,5 @@ app.get('/new-events', (req, res) => {
 
 app.get('/healthz', (req, res) => res.send('OK'));
 
-app.listen(80, () => console.log(`Started!`));
+app.listen(process.env.PORT || 80, () => console.log(`Started!`));
 
