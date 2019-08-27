@@ -1,8 +1,9 @@
 const express = require('express');
 const { EventEmitter } = require('events');
+const bodyParser = require('body-parser');
 
 const app = express();
-app.use(express.json());
+// app.use(express.json());
 
 const events = {};
 const newEvents = new EventEmitter();
@@ -25,7 +26,7 @@ app.post('/new-event', (req, res) => {
     newEvents.emit(scope);
 });
 
-app.get('/new-events', (req, res) => {
+app.get('/new-events', bodyParser.urlencoded({ extended: false }), (req, res) => {
     const scope = req.query.scope;
     if (!scope) {
         res.status(400);
