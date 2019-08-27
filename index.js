@@ -8,7 +8,7 @@ const app = express();
 const events = {};
 const newEvents = new EventEmitter();
 
-app.post('/new-event', (req, res) => {
+app.post('/new-event', bodyParser.urlencoded({ extended: false }), (req, res) => {
     const scope = req.query.scope;
     if (!scope) {
         res.status(400);
@@ -26,7 +26,7 @@ app.post('/new-event', (req, res) => {
     newEvents.emit(scope);
 });
 
-app.get('/new-events', bodyParser.urlencoded({ extended: false }), (req, res) => {
+app.get('/new-events', (req, res) => {
     const scope = req.query.scope;
     if (!scope) {
         res.status(400);
