@@ -23,7 +23,11 @@ app.post('/new-event', bodyParser.urlencoded({ extended: false }), (req, res) =>
     }
 
     events[scope].push(req.body);
-    newEvents.emit(scope);
+    const sended = newEvents.emit(scope);
+
+    if(sended) {
+        events[scope] = [];
+    }
 });
 
 app.get('/new-events', (req, res) => {
@@ -33,14 +37,11 @@ app.get('/new-events', (req, res) => {
         return res.send();
     }
 
-    const sendResponse = () => {
-        const newEvents = events[scope] || [];
-        events[scope] = [];
-        return res.send(newEvents);
-    };
+    const sendResponse = () => res.send(events[scope]);
 
     if (events[scope] && events[scope].length) {
         sendResponse();
+        events[scope] = [];
     } else {
         newEvents.once(scope, sendResponse);
     }
